@@ -1,13 +1,9 @@
 #!python3.7
 # config: UTF-8
-
 import requests
-
 ################################
 # Upload on Slack
 ################################
-
-
 #Upload Captured File
 def slack_upload(filename):
     # Read Slack's token, channels
@@ -15,21 +11,22 @@ def slack_upload(filename):
     data_lines = f.readlines() # Line0 = token, Line1 = channels
     f.close()
     
+    # delete \n
+    for i in range(len(data_lines)):
+        data_lines[i] = data_lines[i].rstrip('\n')
+        
     url = "https://slack.com/api/files.upload"
     data = {
-        
-        "token": "xoxb-1302951648786-1303876717379-22L2deFGinNkB4rnKswAtQRY",
-        "channels": "cats3",
-        
-        #"token": data_lines[0],
-        #"channels": data_lines[1],
-        
+        "token": data_lines[0],
+        #"channels": "cats3",
+        "channels": data_lines[1],
         "title": "Today's Picture"
         }
     files = {'file': open(filename, 'rb')}
     requests.post(url, data=data, files=files)
     print("Done: File Upload")
-
 ################################
-
-''
+'''
+# test
+slack_upload('test.jpg')
+'''
